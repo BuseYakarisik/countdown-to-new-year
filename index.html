@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to New Year</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: url(images/winter.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        body * {
+            z-index: 1;
+        }
+        .header {
+            font-family: 'Rubik Distressed', cursive;
+            text-shadow: 2px 2px 2px black;
+            letter-spacing: 1rem;
+            line-height: 1;
+            font-size: 3.5rem;
+        }
+        .countdown-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Yellowtail', cursive;
+        }
+        .time {
+            font-weight: bold;
+            padding: 0 3rem;
+            font-size: 3rem;
+            margin: 0 1rem;
+        }
+        .time h2 { 
+            margin: 0 0 -20px;
+        }
+        .countdown-container small {
+            font-size: 2.5rem;
+        }
+        @media screen and (max-width: 840px) {
+            .header {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+            .time {
+                margin: 0;
+                padding: 0 2rem;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .header {
+                padding-left: 2%;
+                padding-right: 2%;
+                font-size: 2rem;
+                padding-top: 3%;
+                letter-spacing: 0.5rem;
+            }
+            .time {
+                padding: 0 2.5rem;
+                font-size: 2rem;
+                margin: 1rem 3rem;
+            }  
+        }
+        .snow {
+            position: absolute;
+            opacity: 0.6;
+            top: -1vh;
+            transform: translateY(0);
+            animation: fall 1s linear forwards;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="header">Countdown to New Year</h1>
+    </div>
+    <div class="countdown-container">
+        <div class="time">
+            <h2 id="days">00</h2>
+            <small>Days</small>
+        </div>
+        <div class="time">
+            <h2 id="hours">00</h2>
+            <small>Hours</small>
+        </div>
+        <div class="time">
+            <h2 id="minutes">00</h2>
+            <small>Minutes</small>
+        </div>
+        <div class="time">
+            <h2 id="seconds">00</h2>
+            <small>Seconds</small>
+        </div>
+    </div>
+
+    <script>
+        const days = document.querySelector("#days");
+        const hours = document.querySelector("#hours");
+        const minutes = document.querySelector("#minutes");
+        const seconds = document.querySelector("#seconds");
+
+        const currentYear = new Date().getFullYear();
+        const newYear = new Date(`January 1 ${currentYear + 1} 00:00:00`);
+
+        function countdown() {
+            const currentTime = new Date();
+            const diff = newYear - currentTime;
+            
+            const day = Math.floor(diff / 1000 / 60 / 60 / 24);
+            const hour = Math.floor(diff / 1000 / 60 / 60) %24;
+            const min = Math.floor(diff / 1000 / 60) %60;
+            const second = Math.floor(diff / 1000) %60;
+
+            //console.log(day, hour, min, second);
+
+            days.innerHTML = day;
+            hours.innerHTML = formatEdit(hour);
+            minutes.innerHTML = formatEdit(min);
+            seconds.innerHTML = formatEdit(second);
+        }
+
+        function formatEdit(time) {
+            return time < 10 ? (`0${time}`) : time;
+        }
+
+        setInterval(countdown, 1000);
+
+
+
+        //Snow Effect
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.classList.add('snow');
+            snow.innerText = '❄';
+            snow.style.left = Math.random() * 100 +"vw";
+            snow.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.body.appendChild(snow);
+            setTimeout(() => {snow.remove()}, 5000);
+        }
+
+        setInterval(createSnow, 50);
+    </script>
+</body>
+</html>
